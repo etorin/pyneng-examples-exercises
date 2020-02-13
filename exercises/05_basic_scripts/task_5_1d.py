@@ -43,3 +43,8 @@ london_co = {
         'routing': True
     }
 }
+
+dev_name=input("Name of device: ")
+list_of_att = ', '.join(london_co[dev_name].keys())
+dev_att=input("Device attribute: ({}): ".format(list_of_att)).lower()
+print(london_co[dev_name].get(dev_att, 'This attribute is absent'))
