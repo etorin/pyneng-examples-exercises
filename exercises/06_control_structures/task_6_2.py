@@ -14,3 +14,23 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 '''
+
+ip_add=input("Input IP-add if format 10.0.1.1: ")
+
+if ip_add=="0.0.0.0":
+    print("unassigned")
+    exit(0)
+elif ip_add=="255.255.255.255":
+    print("local broadcast")
+    exit(0)
+
+first_bype_of_ip_add = int(ip_add.split(".")[0])
+if first_bype_of_ip_add <= 223:
+    print("unicast")
+    exit(0)
+elif first_bype_of_ip_add <= 239:
+	print("multicast")
+	exit(0)
+else:
+	print("unused")
+	exit(0)
