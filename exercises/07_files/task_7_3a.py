@@ -22,3 +22,27 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 '''
+
+list_of_list = []
+
+with open('CAM_table.txt', 'r') as file:
+    for line in file:
+        if 'Gi0' in line:
+            vlan, mac, src, port = line.split()
+            list_of_line = [vlan, mac, port]
+            list_of_list.append(list_of_line)
+
+list_length = len(list_of_list)
+i = 0
+
+while i < list_length - 1:
+    j = 0
+    while j < list_length - 1 - i:
+        if int(list_of_list[j][0]) > int(list_of_list[j+1][0]):
+            list_of_list[j][0], list_of_list[j+1][0] = list_of_list[j+1][0], list_of_list[j][0]
+
+        j += 1
+    i += 1
+
+for line in list_of_list:
+    print('{:<5} {:<15} {:<5}'.format(line[0], line[1], line[2]))

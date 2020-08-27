@@ -17,3 +17,9 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 '''
+
+with open ('CAM_table.txt', 'r') as file:
+    for line in file:
+        if 'Gi0' in line:
+            vlan, mac, src, port = line.split()
+            print('{:<5} {:<15} {:<5}'.format(vlan, mac, port))

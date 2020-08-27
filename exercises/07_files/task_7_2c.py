@@ -17,3 +17,19 @@
 '''
 
 ignore = ['duplex', 'alias', 'Current configuration']
+
+import sys
+
+src_filname = sys.argv[1]
+dst_filname = sys.argv[2]
+
+with open(src_filname, 'r') as src:
+    with open(dst_filname, 'w') as dest:
+        for line in src:
+            match_flag = False
+            for i in ignore:
+                if i in line:
+                    match_flag = True
+                    break
+            if not match_flag:
+                dest.write(line)
