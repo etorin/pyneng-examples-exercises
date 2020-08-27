@@ -23,3 +23,33 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 '''
+
+def get_int_vlan_map(config_filename):
+    '''
+    Обрабатывает конфигурационный файл коммутатора
+    и возвращает кортеж из двух словарей
+    '''
+    dict_access = {}
+
+    dict_trunk = {}
+
+    with open(config_filename, 'r') as lines:
+        for line in lines:
+            line = line.rstrip()
+            if 'interface' in line:
+                interface_name = line.split('interface ')[1]
+            elif 'vlan' in line:
+                vlans = line.split('vlan ')[1]
+                if ',' in vlans:
+                    vlans_list = vlans.split(',')
+                    vlans_list = [int(str) for str in vlans_list]
+                    dict_trunk.update({interface_name:vlans_list})
+                else:
+                    dict_access.update({interface_name:int(vlans)})
+            elif 'mode access' in line:
+                dict_access.update({interface_name:1})
+
+    result = (dict_access, dict_trunk)
+    return result
+
+print(get_int_vlan_map('config_sw2.txt'))

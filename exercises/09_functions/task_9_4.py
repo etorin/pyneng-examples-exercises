@@ -22,6 +22,7 @@
 
 ignore = ['duplex', 'alias', 'Current configuration']
 
+result_dict = {}
 
 def ignore_command(command, ignore):
     '''
@@ -35,3 +36,19 @@ def ignore_command(command, ignore):
     * False - если нет
     '''
     return any(word in command for word in ignore)
+
+def convert_config_to_dict(config_filename):
+    with open(config_filename, 'r') as lines:
+        for line in lines:
+            line = line.rstrip()
+            if line and '!' not in line and not ignore_command(line, ignore):
+                if line.startswith(' '):
+                    dict_value = line
+                    result_dict[dict_key].append(dict_value.lstrip())
+                else:
+                    dict_key = line
+                    result_dict.update({dict_key:[]})
+    
+    return result_dict
+
+print(convert_config_to_dict('config_sw1.txt'))

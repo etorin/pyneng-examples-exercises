@@ -26,3 +26,23 @@ trunk_config = {
     'FastEthernet0/4': [17]
 }
 
+def generate_trunk_config(intf_vlan_mapping, trunk_template):
+    '''
+    Функция возвращает словарь команд с конфигурацией
+    на основе указанных портов и шаблона trunk_mode_template
+    '''
+    
+    result = {}
+
+    for port, vlan in intf_vlan_mapping.items():
+        result_list = []
+        for command in trunk_template:
+            if 'allowed' in command:
+                string_ints = [str(int) for int in vlan]
+                result_list.append(command + ' ' + ','.join(string_ints))
+            else:
+                result_list.append(command)
+        result.update({port: result_list})
+    return result
+
+print(generate_trunk_config(trunk_config, trunk_mode_template))

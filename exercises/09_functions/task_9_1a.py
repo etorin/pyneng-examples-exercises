@@ -40,5 +40,36 @@ access_config = {
     'FastEthernet0/16': 17
 }
 
+def generate_access_config(intf_vlan_mapping, access_template, psecurity=None):
+    '''
+    Функция возвращает список комманд для настройки интерфейсов в режиме access,
+    ожидает в качестве аргументов:
 
+    intf_vlan_mapping - словарь с соответствием интерфейс-VLAN такого вида:
+        {'FastEthernet0/12':10,
+         'FastEthernet0/14':11,
+         'FastEthernet0/16':17},
+    access_template - список команд для порта в режиме access,
+    psecurity - список команд для настройки port-security,
+    необязательный параметр psecurity со значением по-умолчанию - None -
+    флаг настройки порта с функцией port-security
+    '''
 
+    result = []
+
+    for port, vlan in intf_vlan_mapping.items():
+        result.append('interface ' + port)
+        for access_command in access_template:
+            if 'vlan' in access_command:
+                result.append(access_command + ' ' + str(vlan))
+            else:
+                result.append(access_command)
+        if psecurity:
+            for port_sec_command in psecurity:
+                result.append(port_sec_command)
+
+    return result
+
+print(generate_access_config(access_config, access_mode_template))
+
+print(generate_access_config(access_config, access_mode_template, port_security_template))
